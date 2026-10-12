@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cine Libre Latino</title>
+<meta name="theme-color" content="#140f1f">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Cine Libre">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+:root{--bg:#140f1f;--card:#221a33;--tx:#ede9fe;--ac:#f59e0b;--mut:#a8a0c0;--btn:#140f1f}
+@media(prefers-color-scheme:light){:root{--bg:#faf5ff;--card:#fff;--tx:#1e1b2e;--ac:#b45309;--mut:#6b6482;--btn:#fff}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font:15px system-ui,sans-serif;background:var(--bg);color:var(--tx);padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+header{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 12px}
+h1{font-size:18px;margin:0;flex:1}
+select,input,button{font:inherit;padding:8px 10px;border-radius:8px;border:1px solid #6b5f8a;background:var(--card);color:var(--tx)}
+button{cursor:pointer;background:var(--ac);color:var(--btn);border:0;font-weight:600}
+main{display:grid;gap:12px;padding:0 12px 12px;max-width:1100px;margin:auto}
+@media(min-width:800px){main{grid-template-columns:2fr 1fr}}
+#box{aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden}
+#box video,#box iframe{width:100%;height:100%;border:0;background:#000;display:none}
+#v{display:block!important}
+#now{margin:6px 0;font-weight:600}
+#msg{color:var(--mut);margin:6px 0}
+#fb{display:none;width:100%;padding:12px;margin-top:6px}
+#inst{display:inline-block}
+aside{background:var(--card);border-radius:10px;padding:8px}
+#q{width:100%;margin-bottom:8px}
+#esl{display:block;margin:0 0 8px;color:var(--mut);font-size:13px}
+#esl input{padding:0;margin-right:6px}
+#l{list-style:none;margin:0;padding:0;max-height:60vh;overflow:auto}
+#l li{display:flex;align-items:center;gap:8px;padding:6px;border-radius:6px;cursor:pointer;content-visibility:auto;contain-intrinsic-size:0 52px}
+#l li:hover,#l li.on{background:rgba(245,158,11,.2)}
+#l img{width:36px;height:48px;object-fit:cover;border-radius:4px;flex:none;background:#0003}
+#l small{color:var(--mut);display:block}
+.st{background:none;color:#facc15;font-size:20px;padding:2px 6px;border:0;flex:none}
+footer{text-align:center;padding:4px 12px 24px;color:var(--mut);font-size:13px}
+footer p{margin:0 0 8px}
+footer img{max-width:100%;height:auto}
+details{background:var(--card);border-radius:10px;padding:8px 12px;margin-top:10px}
+summary{cursor:pointer;font-weight:600}
+details a{color:var(--ac)}
+details li{margin:6px 0}
+select,input,button{min-height:40px}
+.st{min-height:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+#src{min-width:0;max-width:100%;flex:1 1 200px}
+.hint{color:var(--mut);font-size:13px;margin:6px 0}
+.dl{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+details a.bt{display:inline-flex;align-items:center;min-height:40px;padding:8px 12px;border-radius:8px;background:var(--ac);color:var(--btn);font-weight:600;text-decoration:none}
+button.sec{background:var(--card);color:var(--tx);border:1px solid #6b5f8a}
+details h4{margin:12px 0 4px;font-size:14px}
+details ol{padding-left:20px;margin:4px 0}
+dialog{background:var(--card);color:var(--tx);border:1px solid #6b5f8a;border-radius:12px;width:min(92vw,460px);padding:16px}
+dialog::backdrop{background:#0008}
+dialog details{padding:6px 0;margin:0;background:none;border-bottom:1px solid #6b5f8a55}
+@media(max-width:520px){h1{flex:1 1 60%}#src{flex:1 1 100%;order:3}#l{max-height:55dvh}}
+</style></head><body>
+<header>
+ <h1>🎬 Cine Libre</h1>
+ <select id="src"></select>
+ <button id="inst">⬇️ Instalar</button>
+</header>
+<main>
+ <section>
+  <div id="box"><video id="v" controls playsinline></video><iframe id="fr" allowfullscreen allow="autoplay; fullscreen"></iframe></div>
+  <div id="now">Elegí una película o un canal</div>
+  <div id="msg">Cargando…</div>
+  <button id="fb">🔎 Buscar lista gratuita funcionando (100% gratis y legal)</button>
+  <details>
+   <summary>🌎 Repositorios gratuitos oficiales (se abren en su propio sitio)</summary>
+   <p style="color:var(--mut);font-size:13px">No se pueden reproducir dentro de esta página: cada uno tiene su reproductor. Algunos piden registro gratis y pueden variar según el país.</p>
+   <ul>
+    <li>🇦🇷 <a href="https://play.cine.ar" target="_blank" rel="noopener">Cine.ar Play</a> (INCAA): cine, series y cortos argentinos.</li>
+    <li>🌎 <a href="https://retinalatina.org" target="_blank" rel="noopener">Retina Latina</a>: cine de Uruguay, Perú, México, Ecuador, Bolivia y Colombia.</li>
+    <li>🌎 <a href="https://vimeo.com/cinepata" target="_blank" rel="noopener">Cinépata</a>: archivo gratuito de cine latinoamericano.</li>
+    <li>🇲🇽 <a href="https://www.filmoteca.unam.mx" target="_blank" rel="noopener">Filmoteca UNAM</a>: cine mexicano clásico y restaurado.</li>
+    <li>🌎 <a href="https://pluto.tv/latam/live-tv" target="_blank" rel="noopener">Pluto TV Latam</a>: canales 24/7 de cine, series, anime y kids.</li>
+    <li>🇦🇷 <a href="https://www.mercadoplay.com.ar" target="_blank" rel="noopener">Mercado Play</a>: películas y series gratis con anuncios.</li>
+    <li>🌎 <a href="https://watch.plex.tv" target="_blank" rel="noopener">Plex</a> y <a href="https://www.canela.tv" target="_blank" rel="noopener">Canela TV</a>: películas y series gratis con anuncios.</li>
+    <li>🇪🇸 <a href="https://www.rtve.es/play/" target="_blank" rel="noopener">RTVE Play</a>: cine y series, con subtítulos.</li>
+    <li>🎞️ <a href="https://archive.org/details/feature_films" target="_blank" rel="noopener">Internet Archive</a>: cine libre y de dominio público.</li>
+   </ul>
+  </details>
+  <details id="pl" open>
+   <summary>📺 Listas de Pluto TV para VLC (Argentina y México)</summary>
+   <p class="hint">Descargá la lista .m3u y abrila con VLC para ver los canales en vivo en tu computadora, celular o TV.</p>
+   <div class="dl"><a class="bt" data-f="pluto_ar.m3u" href="https://raw.githubusercontent.com/BuddyChewChew/pluto/main/pluto_ar.m3u">⬇️ Pluto TV Argentina</a><button class="sec" data-c="https://raw.githubusercontent.com/BuddyChewChew/pluto/main/pluto_ar.m3u">📋 Copiar enlace</button></div>
+   <div class="dl"><a class="bt" data-f="pluto_mx.m3u" href="https://raw.githubusercontent.com/BuddyChewChew/pluto/main/pluto_mx.m3u">⬇️ Pluto TV México</a><button class="sec" data-c="https://raw.githubusercontent.com/BuddyChewChew/pluto/main/pluto_mx.m3u">📋 Copiar enlace</button></div>
+   <p id="dlm" class="hint" role="status"></p>
+   <h4>💻 Windows, Mac y Linux</h4>
+   <ol>
+    <li>Tocá el botón de descarga: el archivo se guarda en Descargas.</li>
+    <li>Abrí VLC → menú <b>Medio</b> → <b>Abrir archivo…</b> (Ctrl+O) y elegí <i>pluto_ar.m3u</i> o <i>pluto_mx.m3u</i>.</li>
+    <li>Mostrá los canales con <b>Ver → Lista de reproducción</b> (Ctrl+L) y hacé doble clic en el que quieras.</li>
+   </ol>
+   <h4>🔗 Sin descargar (cualquier dispositivo)</h4>
+   <ol>
+    <li>Tocá <b>Copiar enlace</b>.</li>
+    <li>PC: <b>Medio → Abrir ubicación de red</b> (Ctrl+N), pegá el enlace y tocá Reproducir.</li>
+    <li>Android: en VLC, menú <b>Más → Nuevo stream</b>. iPhone/iPad: pestaña <b>Red → Abrir transmisión de red</b>. Pegá el enlace.</li>
+   </ol>
+   <h4>📱 Android y 📺 TV</h4>
+   <p class="hint">Instalá VLC desde Play Store, descargá el .m3u y abrilo desde Descargas con "Abrir con → VLC". En Android TV usá VLC → Red/Streams y pegá el enlace.</p>
+   <p class="hint">Los enlaces de Pluto vencen con el tiempo: si un canal deja de andar, volvé a descargar la lista (o usá el enlace directo para traer la versión actual). Algunos canales dependen del país. Más info: <a href="https://github.com/BuddyChewChew/pluto/blob/main/pluto_ar.m3u" target="_blank" rel="noopener">AR en GitHub</a> · <a href="https://github.com/BuddyChewChew/pluto/blob/main/pluto_mx.m3u" target="_blank" rel="noopener">MX en GitHub</a>.</p>
+  </details>
+ </section>
+ <aside>
+  <div id="flt"><select id="tp" style="width:100%;margin-bottom:6px"><option value="">Todo</option><option value="movie">🎬 Cine</option><option value="series">📺 Series</option><option value="anim">🧸 Dibujos y Kids</option><option value="anime">🍥 Anime</option><option value="classic">🎩 Clásicos</option></select><label id="esl"><input type="checkbox" id="es" checked>Solo Latinoamérica (sin España)</label></div>
+  <input id="q" type="search" placeholder="Buscar título…">
+  <ul id="l"></ul>
+ </aside>
+</main>
+<dialog id="ih">
+ <h3 style="margin:0 0 8px">Instalar la app</h3>
+ <details data-p="android"><summary>Android (Chrome)</summary><p class="hint">Tocá ⋮ y elegí "Instalar app" o "Agregar a pantalla principal".</p></details>
+ <details data-p="ios"><summary>iPhone / iPad (Safari)</summary><p class="hint">Tocá Compartir y elegí "Agregar a pantalla de inicio".</p></details>
+ <details data-p="desk"><summary>Windows / Mac / Linux</summary><p class="hint">Chrome o Edge: ícono de instalar en la barra de direcciones, o menú ⋮ → "Instalar Cine Libre". Safari en Mac: Archivo → Agregar al Dock. Firefox no instala webs en escritorio.</p></details>
+ <p style="text-align:right;margin:12px 0 0"><button onclick="this.closest('dialog').close()">Cerrar</button></p>
+</dialog>
+<footer>
+ <p>Ayudanos a seguir creando</p>
+ <a href='https://cafecito.app/pablotv' rel='noopener' target='_blank'><img loading="lazy" srcset='https://cdn.cafecito.app/imgs/buttons/button_5.png 1x, https://cdn.cafecito.app/imgs/buttons/button_5_2x.png 2x, https://cdn.cafecito.app/imgs/buttons/button_5_3.75x.png 3.75x' src='https://cdn.cafecito.app/imgs/buttons/button_5.png' alt='Invitame un café en cafecito.app' /></a>
+ <p style="margin-top:12px">Canales públicos gratuitos y cine libre del Internet Archive.</p>
+</footer>
+<script>
+const $=s=>document.querySelector(s),v=$('#v'),fr=$('#fr'),B='https://iptv-org.github.io/iptv/';
+const T=(p,ms=12000)=>Promise.race([p,new Promise((_,j)=>setTimeout(j,ms))]);
+const IAX=' AND (language:Spanish OR language:spa)';
+const SRC=[
+ {n:'📡 Canales 24/7 en español (cine, series, dibujos, anime)',t:'m3u',u:B+'languages/spa.m3u'},
+ {n:'🇦🇷 Canales de Argentina',t:'m3u',u:B+'countries/ar.m3u'},
+ {n:'🌎 Canales de Latinoamérica (todos los idiomas)',t:'m3u',u:B+'regions/latam.m3u'},
+ {n:'🎞️ Películas libres en español (ya alojadas)',t:'ia',q:'collection:feature_films'+IAX},
+ {n:'🔤 Cine libre con subtítulos / en español',t:'ia',q:'collection:(feature_films OR classic_tv OR silent_films OR SciFi_Horror) AND (subtitulado OR subtitulada OR subtitulos OR "subtítulos" OR español)'},
+ {n:'🎞️ Cine clásico libre (todas)',t:'ia',q:'collection:feature_films'},
+ {n:'🧸 Dibujos animados clásicos libres',t:'ia',q:'collection:animationandcartoons'},
+ {n:'📼 Series clásicas libres',t:'ia',q:'collection:classic_tv'},
+ {n:'🔬 Ciencia ficción y terror libres',t:'ia',q:'collection:SciFi_Horror'},
+ {n:'🎭 Cine mudo',t:'ia',q:'collection:silent_films'}
+];
+// Respaldo: otros catálogos públicos y gratuitos
+const BACKUP=[
+ {n:'Canales en español',t:'m3u',u:B+'languages/spa.m3u'},
+ {n:'Dibujos animados clásicos',t:'ia',q:'collection:animationandcartoons'},
+ {n:'Cine clásico',t:'m3u',u:B+'categories/classic.m3u'},
+ {n:'Comedia',t:'m3u',u:B+'categories/comedy.m3u'},
+ {n:'Familia',t:'m3u',u:B+'categories/family.m3u'},
+ {n:'Animación',t:'m3u',u:B+'categories/animation.m3u'},
+ {n:'Entretenimiento',t:'m3u',u:B+'categories/entertainment.m3u'},
+ {n:'Free-TV',t:'m3u',u:'https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8'},
+ {n:'Internet Archive: ciencia ficción y terror',t:'ia',q:'collection:SciFi_Horror'},
+ {n:'Internet Archive: cine mudo',t:'ia',q:'collection:silent_films'}
+];
+let ch=[],hls=null,fails=0,typ='m3u';
+const msg=t=>$('#msg').textContent=t;
+SRC.forEach((s,i)=>$('#src').add(new Option(s.n,i)));
+$('#src').add(new Option('⭐ Mis favoritos','fav'));
+let fav=[];try{fav=JSON.parse(localStorage.getItem('fav'))||[]}catch(e){}
+const isFav=u=>fav.some(f=>f.u===u);
+function toggleFav(c){
+ fav=isFav(c.u)?fav.filter(f=>f.u!==c.u):[...fav,{n:c.n,u:c.u,logo:c.logo,g:c.g,id:c.id}];
+ try{localStorage.setItem('fav',JSON.stringify(fav))}catch(e){}
+}
+function parse(t){
+ const out=[];let m=null;
+ for(const x of t.split(/\r?\n/)){
+  if(x.startsWith('#EXTINF')){
+   m={n:(x.split(',').pop()||'').trim(),
+      logo:(x.match(/tvg-logo="([^"]*)"/)||[])[1]||'',
+      id:(x.match(/tvg-id="([^"]*)"/)||[])[1]||'',
+      g:(x.match(/group-title="([^"]*)"/)||[])[1]||'Canal en vivo'};
+  }else if(m&&/^https?:/i.test(x.trim())){
+   m.u=x.trim();
+   if(location.protocol==='https:'&&m.u.startsWith('http:'))m.u=null;
+   if(m.u&&m.n)out.push(m);
+   m=null;
+  }
+ }
+ return out;
+}
+async function loadM3u(url){
+ const r=await T(fetch(url));if(!r.ok)throw 0;
+ const c=parse(await r.text());if(!c.length)throw 0;return c;
+}
+async function loadIA(q){
+ const p=new URLSearchParams({q:q+' AND mediatype:movies',rows:150,output:'json'});
+ ['identifier','title','year'].forEach(f=>p.append('fl[]',f));p.append('sort[]','downloads desc');
+ const r=await T(fetch('https://archive.org/advancedsearch.php?'+p));if(!r.ok)throw 0;
+ const d=(await r.json()).response.docs;if(!d.length)throw 0;
+ return d.map(x=>({n:[].concat(x.title)[0],u:'archive:'+x.identifier,logo:'https://archive.org/services/img/'+x.identifier,g:x.year?String(x.year):'Internet Archive',id:''}));
+}
+const loadSrc=s=>s.t==='ia'?loadIA(s.q):loadM3u(s.u);
+const isEs=c=>/\.(ar|mx|co|cl|pe|uy|py|bo|ec|ve|cr|pa|do|gt|sv|hn|ni|cu|pr|es)(@|$)/i.test(c.id||'');
+const TP={movie:/movie/i,series:/series/i,anim:/animation|kids|family/i,classic:/classic/i};
+function pass(c){
+ const t=$('#tp').value;
+ if(!t)return true;
+ if(t==='anime')return /anime|naruto|dragon ball|one piece|manga|otaku|saint seiya|caballeros|pokemon|pokémon/i.test(c.n+' '+c.g);
+ return TP[t].test(c.g);
+}
+function show(){
+ const q=$('#q').value.toLowerCase(),l=$('#l');l.textContent='';
+ $('#flt').style.display=typ==='m3u'?'block':'none';
+ let base=ch.filter(c=>c.n.toLowerCase().includes(q));
+ if(typ==='m3u'){
+  if($('#es').checked)base=base.filter(c=>!/\.es(@|$)/i.test(c.id||''));
+  base=base.filter(pass);
+  msg(base.length?base.length+' canales'+(base.length>400?' (mostrando 400: usá el buscador)':''):'Sin resultados: probá otro tipo o desmarcá "Solo Latinoamérica".');
+ }
+ base.slice(0,400).forEach(c=>{
+  const li=document.createElement('li');
+  li.innerHTML='<img loading="lazy" alt="" onerror="this.style.visibility=\'hidden\'"><div style="flex:1;min-width:0"><span></span><small></small></div><button class="st" title="Favorito"></button>';
+  li.querySelector('img').src=c.logo;
+  li.querySelector('span').textContent=c.n;
+  li.querySelector('small').textContent=c.g;
+  const st=li.querySelector('.st');st.textContent=isFav(c.u)?'★':'☆';
+  st.onclick=e=>{e.stopPropagation();toggleFav(c);st.textContent=isFav(c.u)?'★':'☆';
+   if($('#src').value==='fav'&&!isFav(c.u)){li.remove();ch=fav;msg(fav.length+' favoritos')}};
+  li.onclick=()=>{document.querySelectorAll('#l .on').forEach(e=>e.classList.remove('on'));li.classList.add('on');play(c)};
+  l.appendChild(li);
+ });
+}
+async function loadHls(){
+ if(window.Hls)return;
+ await new Promise((ok,no)=>{const s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.13/hls.min.js';
+  s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+}
+async function play(c){
+ $('#now').textContent=c.n;
+ if(hls){hls.destroy();hls=null}
+ v.pause();v.removeAttribute('src');
+ if(c.u.startsWith('archive:')){
+  v.style.display='none';fr.style.display='block';
+  fr.src='https://archive.org/embed/'+c.u.slice(8);msg('Cargando desde Internet Archive…');return;
+ }
+ fr.src='about:blank';fr.style.display='none';v.style.display='block';msg('Conectando…');
+ const bad=()=>{if(++fails>=3){msg('Varios canales no responden. La lista puede estar caída.');$('#fb').style.display='block'}else msg('Este canal no responde, probá otro.')};
+ try{
+  const isHls=/\.m3u8|\/hls|playlist/i.test(c.u);
+  if(isHls&&!v.canPlayType('application/vnd.apple.mpegurl')){
+   await loadHls();
+   if(Hls.isSupported()){
+    hls=new Hls({maxBufferLength:20});
+    hls.loadSource(c.u);hls.attachMedia(v);
+    hls.on(Hls.Events.MANIFEST_PARSED,()=>{v.play().catch(()=>{});msg('');fails=0});
+    hls.on(Hls.Events.ERROR,(e,d)=>{if(d.fatal){hls.destroy();bad()}});
+    return;
+   }
+  }
+  v.src=c.u;v.onerror=bad;v.onplaying=()=>{msg('');fails=0};
+  v.play().catch(()=>{});
+ }catch(e){bad()}
+}
+async function start(i){
+ $('#fb').style.display='none';fails=0;
+ if(i==='fav'){typ='fav';ch=fav;msg(fav.length?fav.length+' favoritos':'Todavía no marcaste favoritos: tocá ☆ en un título.');show();return}
+ const s=SRC[i];typ=s.t;msg('Cargando lista…');
+ try{ch=await loadSrc(s);try{localStorage.setItem('c'+i,JSON.stringify(ch.slice(0,300)))}catch(e){}msg(ch.length+' títulos')}
+ catch(e){
+  let c=null;try{c=JSON.parse(localStorage.getItem('c'+i))}catch(e){}
+  if(c&&c.length){ch=c;msg('Sin conexión a la lista: mostrando la última guardada.')}
+  else{ch=[];msg('No se pudo cargar la lista.');$('#fb').style.display='block'}
+ }
+ show();
+}
+$('#fb').onclick=async()=>{
+ const b=$('#fb');b.disabled=true;
+ for(const s of BACKUP){
+  msg('Probando lista: '+s.n+'…');
+  try{ch=await loadSrc(s);typ=s.t;msg('✅ Lista funcionando: '+s.n+' ('+ch.length+' títulos)');b.style.display='none';show();b.disabled=false;fails=0;return}catch(e){}
+ }
+ msg('No encontré otra lista ahora. Revisá tu conexión e intentá más tarde.');b.disabled=false;
+};
+$('#src').onchange=e=>start(e.target.value);
+$('#q').oninput=show;$('#es').onchange=show;$('#tp').onchange=show;
+start(0);
+let dp=null;
+if(matchMedia('(display-mode: standalone)').matches||navigator.standalone)$('#inst').style.display='none';
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e});
+addEventListener('appinstalled',()=>$('#inst').style.display='none');
+const ua=navigator.userAgent,plat=/iphone|ipad|ipod/i.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)?'ios':/android/i.test(ua)?'android':'desk';
+$('#inst').onclick=async()=>{
+ if(dp){dp.prompt();await dp.userChoice;dp=null;return}
+ document.querySelectorAll('#ih details').forEach(d=>d.open=d.dataset.p===plat);
+ const d=$('#ih');d.showModal?d.showModal():alert('Usá el menú del navegador: "Instalar app" o "Agregar a pantalla de inicio".');
+};
+async function dlM3u(a){
+ try{const r=await T(fetch(a.href));if(!r.ok)throw 0;
+  const u=URL.createObjectURL(new Blob([await r.text()],{type:'audio/x-mpegurl'})),x=document.createElement('a');
+  x.href=u;x.download=a.dataset.f;document.body.appendChild(x);x.click();x.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);
+  $('#dlm').textContent='✅ Descargado: '+a.dataset.f+'. Abrilo con VLC (pasos abajo).';
+ }catch(e){window.open(a.href,'_blank','noopener');$('#dlm').textContent='Se abrió el archivo en otra pestaña: guardalo con "Guardar como…" o copiá el enlace y usalo en VLC.'}
+}
+document.addEventListener('click',async e=>{
+ const a=e.target.closest('a[data-f]');
+ if(a){e.preventDefault();dlM3u(a);return}
+ const c=e.target.closest('button[data-c]');
+ if(c){try{await navigator.clipboard.writeText(c.dataset.c);$('#dlm').textContent='📋 Enlace copiado. En VLC: Medio → Abrir ubicación de red → pegar.'}catch(x){prompt('Copiá este enlace:',c.dataset.c)}}
+});
+if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script></body></html>
